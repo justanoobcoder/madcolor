@@ -29,6 +29,13 @@ public class SecurityUserDetailsService implements UserDetailsService {
     private User createSecurityUser(Employee e) {
         Collection<? extends GrantedAuthority> authorities =
                 List.of(new SimpleGrantedAuthority(e.getRole().getName()));
-        return new User(e.getUsername(), e.getPassword(), authorities);
+        return new User(
+                e.getUsername(),
+                e.getPassword(),
+                e.getActivated(),
+                true,
+                true,
+                true,
+                authorities);
     }
 }

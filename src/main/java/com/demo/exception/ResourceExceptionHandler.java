@@ -2,8 +2,7 @@ package com.demo.exception;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -17,21 +16,10 @@ import java.time.Instant;
 @RestControllerAdvice
 public class ResourceExceptionHandler implements ProblemHandling {
     @ExceptionHandler
-    public ResponseEntity<Problem> handleIncorrectUsernamePassword(BadCredentialsException e, NativeWebRequest request) {
+    public ResponseEntity<Problem> handleAuthenticationException(AuthenticationException e, NativeWebRequest request) {
         ThrowableProblem problem = Problem.builder()
                 .with("timestamp", Instant.now())
-                .with("error", "Bad credentials")
-                .withStatus(Status.UNAUTHORIZED)
-                .withDetail("Incorrect username or password")
-                .build();
-        return create(problem, request);
-    }
-
-    @ExceptionHandler
-    public ResponseEntity<Problem> handleAuthenticationRequiredException(InsufficientAuthenticationException e, NativeWebRequest request) {
-        ThrowableProblem problem = Problem.builder()
-                .with("timestamp", Instant.now())
-                .with("error", "Unauthorized")
+                .with("error", Status.UNAUTHORIZED.getReasonPhrase())
                 .withStatus(Status.UNAUTHORIZED)
                 .withDetail(e.getMessage())
                 .build();
@@ -41,7 +29,7 @@ public class ResourceExceptionHandler implements ProblemHandling {
     public ResponseEntity<Problem> handleAccessDeniedException(AccessDeniedException e, NativeWebRequest request) {
         ThrowableProblem problem = Problem.builder()
                 .with("timestamp", Instant.now())
-                .with("error", "Forbidden")
+                .with("error", Status.FORBIDDEN.getReasonPhrase())
                 .withStatus(Status.FORBIDDEN)
                 .withDetail(e.getMessage())
                 .build();
@@ -52,7 +40,7 @@ public class ResourceExceptionHandler implements ProblemHandling {
     public ResponseEntity<Problem> handleResourceNotFoundException(ResourceNotFoundException e, NativeWebRequest request) {
         ThrowableProblem problem = Problem.builder()
                 .with("timestamp", Instant.now())
-                .with("error", "Not found")
+                .with("error", Status.NOT_FOUND.getReasonPhrase())
                 .withStatus(Status.NOT_FOUND)
                 .withDetail(e.getMessage())
                 .build();
@@ -62,7 +50,7 @@ public class ResourceExceptionHandler implements ProblemHandling {
     public ResponseEntity<Problem> handleResourceAlreadyExistsException(ResourceAlreadyExistsException e, NativeWebRequest request) {
         ThrowableProblem problem = Problem.builder()
                 .with("timestamp", Instant.now())
-                .with("error", "Conflict")
+                .with("error", Status.CONFLICT.getReasonPhrase())
                 .withStatus(Status.CONFLICT)
                 .withDetail(e.getMessage())
                 .build();
