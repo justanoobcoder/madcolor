@@ -27,5 +27,5 @@ public interface CustomerResource {
             security = @SecurityRequirement(name = "token_auth")
     )
     @PatchMapping(value = "/customers/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    CustomerDto updateCustomer(@PathVariable Long id, @RequestBody CustomerVM customerVM);
+    CustomerDto updateCustomer(@PathVariable Long id, @RequestBody @Valid CustomerVM customerVM);
 }

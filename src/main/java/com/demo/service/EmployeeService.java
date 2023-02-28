@@ -13,6 +13,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class EmployeeService {
     private final EmployeeRepository employeeRepository;
     @Transactional(readOnly = true, propagation = Propagation.NOT_SUPPORTED)

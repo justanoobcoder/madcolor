@@ -13,9 +13,11 @@ import com.demo.service.mapper.CustomerMapper;
 import com.demo.web.vm.CustomerVM;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class CustomerService {
     private final CustomerMapper customerMapper;
     private final CustomerRepository customerRepository;
@@ -53,13 +55,13 @@ public class CustomerService {
         Customer customer = customerRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
-        if (customerVM.telephone() != null) {
+        if (customerVM.telephone().equals(customer.getTelephone())) {
             customer.setTelephone(customerVM.telephone());
         }
-        if (customerVM.fullName() != null) {
+        if (customerVM.fullName().equals(customer.getFullName())) {
             customer.setFullName(customerVM.fullName());
         }
-        if (customerVM.gender() != null) {
+        if (customerVM.gender().equals(customer.getGender().getName())) {
             Gender gender = genderRepository
                     .findByName(customerVM.gender())
                     .orElseThrow(() -> new ResourceNotFoundException("Gender " + customerVM.gender() + " not found"));
