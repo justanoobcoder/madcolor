@@ -16,9 +16,16 @@ public interface CustomerResource {
     )
     @PostMapping(value = "/customers", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     CustomerDto createNewCustomer(@RequestBody @Valid CustomerVM customerVM);
+
     @Operation(
             security = @SecurityRequirement(name = "token_auth")
     )
     @GetMapping(value = "/customers/{telephone}", produces = MediaType.APPLICATION_JSON_VALUE)
     CustomerDto getCustomer(@PathVariable String telephone);
+
+    @Operation(
+            security = @SecurityRequirement(name = "token_auth")
+    )
+    @PatchMapping(value = "/customers/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    CustomerDto updateCustomer(@PathVariable Long id, @RequestBody CustomerVM customerVM);
 }

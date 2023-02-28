@@ -19,4 +19,8 @@ public class CustomerMapper {
     public Customer toEntity(CustomerDto customerDto) {
         return Objects.isNull(customerDto) ? null : modelMapper.map(customerDto, Customer.class);
     }
+
+    public void map(CustomerDto customerDto, Customer customer) {
+        modelMapper.map(customerDto, customer);
+    }
 }

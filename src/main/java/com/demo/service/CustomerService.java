@@ -45,4 +45,26 @@ public class CustomerService {
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
         return customerMapper.toDto(customer);
     }
+
+    public CustomerDto updateCustomer(Long id, CustomerVM customerVM) {
+        if (customerRepository.existsByTelephone(customerVM.telephone())) {
+            throw new ResourceAlreadyExistsException("Customer with telephone " + customerVM.telephone() + " already existed");
+        }
+        Customer customer = customerRepository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+        if (customerVM.telephone() != null) {
+            customer.setTelephone(customerVM.telephone());
+        }
+        if (customerVM.fullName() != null) {
+            customer.setFullName(customerVM.fullName());
+        }
+        if (customerVM.gender() != null) {
+            Gender gender = genderRepository
+                    .findByName(customerVM.gender())
+                    .orElseThrow(() -> new ResourceNotFoundException("Gender " + customerVM.gender() + " not found"));
+            customer.setGender(gender);
+        }
+        return customerMapper.toDto(customerRepository.save(customer));
+    }
 }

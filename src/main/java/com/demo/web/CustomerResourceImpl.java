@@ -21,4 +21,9 @@ public class CustomerResourceImpl implements CustomerResource {
     public CustomerDto getCustomer(String telephone) {
         return customerService.getCustomerByTelephone(telephone);
     }
+
+    @Override
+    public CustomerDto updateCustomer(Long id, CustomerVM customerVM) {
+        return customerService.updateCustomer(id, customerVM);
+    }
 }

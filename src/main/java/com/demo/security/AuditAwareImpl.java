@@ -14,6 +14,6 @@ public class AuditAwareImpl implements AuditorAware<Employee> {
     private final EmployeeService employeeService;
     @Override
     public Optional<Employee> getCurrentAuditor() {
-        return Optional.of(employeeService.getCurrentEmployee());
+        return Optional.ofNullable(employeeService.getCurrentEmployeeLogin());
     }
 }
