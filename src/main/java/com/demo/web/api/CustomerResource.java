@@ -27,7 +27,7 @@ public interface CustomerResource {
             @ApiResponse(responseCode = "409", description = "Telephone already existed", content = @Content)
     }
     )
-    @PostMapping(value = "/customers", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/customer", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     CustomerDto createNewCustomer(@RequestBody @Valid CustomerVM customerVM);
 
     @Operation(
@@ -42,7 +42,7 @@ public interface CustomerResource {
             @ApiResponse(responseCode = "404", description = "Customer not found", content = @Content)
     }
     )
-    @GetMapping(value = "/customers/{telephone}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/customer/{telephone}", produces = MediaType.APPLICATION_JSON_VALUE)
     CustomerDto getCustomer(@PathVariable String telephone);
 
     @Operation(
@@ -59,6 +59,6 @@ public interface CustomerResource {
             @ApiResponse(responseCode = "409", description = "Telephone already existed", content = @Content)
     }
     )
-    @PatchMapping(value = "/customers/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PatchMapping(value = "/customer/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     CustomerDto updateCustomer(@PathVariable Long id, @RequestBody @Valid CustomerVM customerVM);
 }

@@ -21,7 +21,7 @@ public class CategoryResourceImpl implements CategoryResource {
     }
 
     @Override
-    public ResponseEntity<Category> getCategoryBYName(String name) {
+    public ResponseEntity<Category> getCategoryByName(String name) {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(categoryService.getCategoryByName(name));
