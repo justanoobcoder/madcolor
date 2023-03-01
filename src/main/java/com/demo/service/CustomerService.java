@@ -1,13 +1,9 @@
 package com.demo.service;
 
 import com.demo.domain.Customer;
-import com.demo.domain.Gender;
-import com.demo.domain.Rank;
 import com.demo.exception.ResourceAlreadyExistsException;
 import com.demo.exception.ResourceNotFoundException;
 import com.demo.repository.CustomerRepository;
-import com.demo.repository.GenderRepository;
-import com.demo.repository.RankRepository;
 import com.demo.service.dto.CustomerDto;
 import com.demo.service.mapper.CustomerMapper;
 import com.demo.web.vm.CustomerVM;
@@ -21,23 +17,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomerService {
     private final CustomerMapper customerMapper;
     private final CustomerRepository customerRepository;
-    private final GenderRepository genderRepository;
-    private final RankRepository rankRepository;
+    private final GenderService genderService;
+    private final RankService rankService;
+
     public CustomerDto createCustomer(CustomerVM customerVM) {
         if (customerRepository.existsByTelephone(customerVM.telephone())) {
             throw new ResourceAlreadyExistsException("Customer with telephone " + customerVM.telephone() + " already existed");
         }
-        Customer customer = new Customer();
-        customer.setTelephone(customerVM.telephone());
-        customer.setFullName(customerVM.fullName());
-        Gender gender = genderRepository
-                .findByName(customerVM.gender())
-                .orElseThrow(() -> new ResourceNotFoundException("Gender " + customerVM.gender() + " not found"));
-        customer.setGender(gender);
-        Rank rank = rankRepository
-                .findRankByPoint(customer.getPoint())
-                .orElseThrow(() -> new ResourceNotFoundException("Rank not found"));
-        customer.setRank(rank);
+        Customer customer = customerMapper.toEntity(customerVM, genderService);
+        customer.setRank(rankService.getRankByCustomerPoint(customer.getPoint()));
         return customerMapper.toDto(customerRepository.save(customer));
     }
 
@@ -49,24 +37,14 @@ public class CustomerService {
     }
 
     public CustomerDto updateCustomer(Long id, CustomerVM customerVM) {
-        if (customerRepository.existsByTelephone(customerVM.telephone())) {
-            throw new ResourceAlreadyExistsException("Customer with telephone " + customerVM.telephone() + " already existed");
-        }
         Customer customer = customerRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
-        if (customerVM.telephone().equals(customer.getTelephone())) {
-            customer.setTelephone(customerVM.telephone());
+        if (!customerVM.telephone().equals(customer.getTelephone()) &&
+                customerRepository.existsByTelephone(customerVM.telephone())) {
+            throw new ResourceAlreadyExistsException("Customer with telephone " + customerVM.telephone() + " already existed");
         }
-        if (customerVM.fullName().equals(customer.getFullName())) {
-            customer.setFullName(customerVM.fullName());
-        }
-        if (customerVM.gender().equals(customer.getGender().getName())) {
-            Gender gender = genderRepository
-                    .findByName(customerVM.gender())
-                    .orElseThrow(() -> new ResourceNotFoundException("Gender " + customerVM.gender() + " not found"));
-            customer.setGender(gender);
-        }
+        customerMapper.map(customerVM, customer, genderService);
         return customerMapper.toDto(customerRepository.save(customer));
     }
 }
