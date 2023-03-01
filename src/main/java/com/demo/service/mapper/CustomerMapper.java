@@ -1,26 +1,32 @@
 package com.demo.service.mapper;
 
+import com.demo.annotation.IgnoreAuditProperties;
 import com.demo.domain.Customer;
+import com.demo.exception.ResourceNotFoundException;
+import com.demo.service.GenderService;
 import com.demo.service.dto.CustomerDto;
 import com.demo.web.vm.CustomerVM;
-import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.factory.Mappers;
 
-import java.util.Objects;
+@Mapper(componentModel = "spring", imports = {GenderService.class, ResourceNotFoundException.class})
+public interface CustomerMapper {
+    //CustomerMapper INSTANCE = Mappers.getMapper(CustomerMapper.class);
 
-@RequiredArgsConstructor
-@Component
-public class CustomerMapper {
-    private final ModelMapper modelMapper;
-    public CustomerDto toDto(Customer customer) {
-        return Objects.isNull(customer) ? null : modelMapper.map(customer, CustomerDto.class);
-    }
-    public Customer toEntity(CustomerDto customerDto) {
-        return Objects.isNull(customerDto) ? null : modelMapper.map(customerDto, Customer.class);
-    }
+    @Mapping(target = "gender",
+            expression = "java(genderService.getGenderByName(customerVM.gender()))")
+    @IgnoreAuditProperties
+    Customer toEntity(CustomerVM customerVM, GenderService genderService);
 
-    public void map(CustomerDto customerDto, Customer customer) {
-        modelMapper.map(customerDto, customer);
-    }
+    @Mapping(target = "gender",
+            expression = "java(genderService.getGenderByName(customerVM.gender()))")
+    @IgnoreAuditProperties
+    void map(CustomerVM customerVM, @MappingTarget Customer customer, GenderService genderService);
+
+    @Mapping(target = "rankName", source = "rank.name")
+    @Mapping(target = "rankDiscount", source = "rank.discount")
+    @Mapping(target = "genderName", source = "customer.gender.name")
+    CustomerDto toDto(Customer customer);
 }
