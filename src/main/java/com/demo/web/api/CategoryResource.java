@@ -12,12 +12,14 @@ import javax.validation.Valid;
 @RequestMapping("/api")
 public interface CategoryResource {
     @Operation(
+            tags = "category",
             security = @SecurityRequirement(name = "token_auth")
     )
     @PostMapping("/category")
     ResponseEntity<Category> addNewCategory(@RequestBody @Valid CategoryVM categoryVM);
 
     @Operation(
+            tags = "category",
             security = @SecurityRequirement(name = "token_auth")
     )
     @GetMapping("/category")

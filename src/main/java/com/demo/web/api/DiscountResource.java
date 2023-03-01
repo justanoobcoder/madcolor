@@ -14,6 +14,7 @@ import javax.validation.Valid;
 @RequestMapping("/api")
 public interface DiscountResource {
     @Operation(
+            tags = "discount",
             security = @SecurityRequirement(name = "token_auth")
     )
     @PostMapping("/discount")
