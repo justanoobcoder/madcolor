@@ -24,7 +24,7 @@ public interface CustomerMapper {
     void map(CustomerVM customerVM, @MappingTarget Customer customer, GenderService genderService);
 
     @Mapping(target = "rankName", source = "rank.name")
-    @Mapping(target = "rankDiscount", source = "rank.discount")
+    @Mapping(target = "discountPercent", source = "rank.discountPercent")
     @Mapping(target = "genderName", source = "customer.gender.name")
     CustomerDto toDto(Customer customer);
 }

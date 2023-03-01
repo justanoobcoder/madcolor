@@ -10,16 +10,12 @@ import java.io.Serializable;
 @Getter
 @Setter
 @ToString
-@Table(name = "ranks")
+@Table(name = "categories")
 @Entity
-public class Rank implements Serializable {
+public class Category implements Serializable {
     private static final Long serialVersionUID = 1L;
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 20, unique = true, nullable = false)
+    @Column(length = 50, unique = true, nullable = false)
     private String name;
-    @Column(unique = true, nullable = false)
-    private Integer point;
-    @Column(nullable = false)
-    private Integer discountPercent;
 }

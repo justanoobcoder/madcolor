@@ -6,20 +6,24 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.Instant;
 
-@Getter
 @Setter
+@Getter
 @ToString
-@Table(name = "ranks")
+@Table(name = "discounts")
 @Entity
-public class Rank implements Serializable {
+public class Discount implements Serializable {
     private static final Long serialVersionUID = 1L;
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 20, unique = true, nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
-    @Column(unique = true, nullable = false)
-    private Integer point;
     @Column(nullable = false)
-    private Integer discountPercent;
+    private Integer percent;
+    private String description;
+    @Column(nullable = false)
+    private Instant startAt;
+    @Column(nullable = false)
+    private Instant endAt;
 }

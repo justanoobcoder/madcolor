@@ -24,6 +24,6 @@ public class CustomerDto implements Serializable {
     private Integer point = 0;
     @JsonProperty("rank")
     private String rankName;
-    @JsonProperty("discount")
-    private Float rankDiscount;
+    @JsonProperty("discountPercent")
+    private Integer discountPercent;
 }
