@@ -1,11 +1,11 @@
-logging:
-  level:
-    root: info
-    org:
-      springframework:
-        orm:
-          jpa: debug
-        transaction: debug
+#logging:
+#  level:
+#    root: info
+#    org:
+#      springframework:
+#        orm:
+#          jpa: debug
+#        transaction: debug
 
 spring:
   datasource:
