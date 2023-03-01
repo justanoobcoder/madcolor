@@ -32,14 +32,14 @@ public class CustomerService {
     public CustomerDto getCustomerByTelephone(String telephone) {
         Customer customer = customerRepository
                 .findByTelephone(telephone)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer with telephone " + telephone + " not found"));
         return customerMapper.toDto(customer);
     }
 
     public CustomerDto updateCustomer(Long id, CustomerVM customerVM) {
         Customer customer = customerRepository
                 .findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Customer not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Customer with id " + id + " not found"));
         if (!customerVM.telephone().equals(customer.getTelephone()) &&
                 customerRepository.existsByTelephone(customerVM.telephone())) {
             throw new ResourceAlreadyExistsException("Customer with telephone " + customerVM.telephone() + " already existed");

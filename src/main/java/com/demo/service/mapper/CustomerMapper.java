@@ -1,6 +1,5 @@
 package com.demo.service.mapper;
 
-import com.demo.annotation.IgnoreAuditProperties;
 import com.demo.domain.Customer;
 import com.demo.exception.ResourceNotFoundException;
 import com.demo.service.GenderService;
@@ -9,20 +8,19 @@ import com.demo.web.vm.CustomerVM;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
-import org.mapstruct.factory.Mappers;
+import org.mapstruct.ReportingPolicy;
 
-@Mapper(componentModel = "spring", imports = {GenderService.class, ResourceNotFoundException.class})
+@Mapper(componentModel = "spring",
+        imports = {GenderService.class, ResourceNotFoundException.class},
+        unmappedTargetPolicy = ReportingPolicy.IGNORE
+)
 public interface CustomerMapper {
-    //CustomerMapper INSTANCE = Mappers.getMapper(CustomerMapper.class);
-
     @Mapping(target = "gender",
             expression = "java(genderService.getGenderByName(customerVM.gender()))")
-    @IgnoreAuditProperties
     Customer toEntity(CustomerVM customerVM, GenderService genderService);
 
     @Mapping(target = "gender",
             expression = "java(genderService.getGenderByName(customerVM.gender()))")
-    @IgnoreAuditProperties
     void map(CustomerVM customerVM, @MappingTarget Customer customer, GenderService genderService);
 
     @Mapping(target = "rankName", source = "rank.name")
