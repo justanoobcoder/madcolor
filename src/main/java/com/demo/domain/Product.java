@@ -29,5 +29,7 @@ public class Product extends AbstractAuditEntity implements Serializable {
     @JoinColumn(name = "discount_id")
     private Discount discount;
     @Column(length = 20, nullable = false)
-    private String status;
+    private String status = "INACTIVE";
+    @JoinColumn(nullable = false)
+    private Integer quantity;
 }
