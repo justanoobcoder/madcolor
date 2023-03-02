@@ -25,4 +25,10 @@ public class CategoryService {
                 .findByName(name)
                 .orElseThrow(() -> new ResourceNotFoundException("Category with name " + name + " not found"));
     }
+
+    public Category getCategoryById(Long id) {
+        return categoryRepository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Category with id " + id + " not found"));
+    }
 }
