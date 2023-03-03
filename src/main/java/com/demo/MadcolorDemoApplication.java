@@ -32,7 +32,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
                 @Tag(name = "customer", description = "REST API endpoints for customer operations"),
                 @Tag(name = "category", description = "REST API endpoints for category operations"),
                 @Tag(name = "discount", description = "REST API endpoints for discount operations"),
-                @Tag(name = "product", description = "REST API endpoints for product operations")
+                @Tag(name = "product", description = "REST API endpoints for product operations"),
+                @Tag(name = "order", description = "REST API endpoints for order operations")
         }
 )
 public class MadcolorDemoApplication {
