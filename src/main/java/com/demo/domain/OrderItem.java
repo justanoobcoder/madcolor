@@ -6,7 +6,6 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 @Setter
 @Getter
@@ -25,6 +24,6 @@ public class OrderItem implements Serializable {
     private Product product;
     @Column(nullable = false)
     private Integer quantity;
-    @Column(precision = 2, nullable = false)
-    private BigDecimal cost;
+    @Column(nullable = false)
+    private Double cost;
 }

@@ -29,6 +29,8 @@ public class Order implements Serializable {
     private Employee employee;
     @CreatedDate
     private Instant createdAt;
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems;
+    @Column(nullable = false)
+    private Double totalPrice;
 }

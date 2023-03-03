@@ -3,7 +3,6 @@ package com.demo.web.vm;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.math.BigDecimal;
 
 public record ProductVM(
         @Size(max = 20, message = "SKU too long")
@@ -14,7 +13,7 @@ public record ProductVM(
         @NotNull(message = "Category is required")
         Long categoryId,
         @NotNull(message = "Price is required")
-        BigDecimal price,
+        Double price,
         @NotNull(message = "Quantity is required")
         Integer quantity) {
 }

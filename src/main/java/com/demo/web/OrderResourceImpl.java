@@ -26,4 +26,11 @@ public class OrderResourceImpl implements OrderResource {
                 .status(HttpStatus.OK)
                 .body(orderService.addProductToTempOrder(orderId, sku, quantity));
     }
+
+    @Override
+    public ResponseEntity<OrderService.PaidOrder> checkoutOrder(String orderId, String telephone) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(orderService.checkoutOrder(orderId, telephone));
+    }
 }

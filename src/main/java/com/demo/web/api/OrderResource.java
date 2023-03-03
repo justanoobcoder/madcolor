@@ -1,5 +1,6 @@
 package com.demo.web.api;
 
+import com.demo.service.OrderService;
 import com.demo.service.dto.OrderTempDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,7 +22,7 @@ public interface OrderResource {
             security = @SecurityRequirement(name = "token_auth")
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Create order successfully"),
+            @ApiResponse(responseCode = "201", description = "Create order successfully", content = @Content),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
     })
     @PostMapping(value = "/order/create", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -43,4 +44,18 @@ public interface OrderResource {
             @RequestParam String orderId,
             @RequestParam String sku,
             @RequestParam(required = false) Integer quantity);
+
+    @Operation(
+            summary = "Checkout order",
+            description = "Checkout order",
+            tags = "order",
+            security = @SecurityRequirement(name = "token_auth")
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Checkout successfully"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Order not found", content = @Content)
+    })
+    @PostMapping("/order/checkout")
+    ResponseEntity<OrderService.PaidOrder> checkoutOrder(@RequestParam String orderId, @RequestParam(required = false) String telephone);
 }

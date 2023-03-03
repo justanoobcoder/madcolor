@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,7 +29,7 @@ public interface CustomerResource {
     }
     )
     @PostMapping(value = "/customer", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    CustomerDto createNewCustomer(@RequestBody @Valid CustomerVM customerVM);
+    ResponseEntity<CustomerDto> createNewCustomer(@RequestBody @Valid CustomerVM customerVM);
 
     @Operation(
             summary = "Get a customer",
@@ -43,7 +44,7 @@ public interface CustomerResource {
     }
     )
     @GetMapping(value = "/customer/{telephone}", produces = MediaType.APPLICATION_JSON_VALUE)
-    CustomerDto getCustomer(@PathVariable String telephone);
+    ResponseEntity<CustomerDto> getCustomer(@PathVariable String telephone);
 
     @Operation(
             summary = "Update a customer",
@@ -60,5 +61,5 @@ public interface CustomerResource {
     }
     )
     @PatchMapping(value = "/customer/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    CustomerDto updateCustomer(@PathVariable Long id, @RequestBody @Valid CustomerVM customerVM);
+    ResponseEntity<CustomerDto> updateCustomer(@PathVariable Long id, @RequestBody @Valid CustomerVM customerVM);
 }

@@ -6,7 +6,6 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 @Setter
 @Getter
@@ -24,7 +23,7 @@ public class Product extends AbstractAuditEntity implements Serializable {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
     @Column(nullable = false)
-    private BigDecimal price;
+    private Double price;
     @ManyToOne
     @JoinColumn(name = "discount_id")
     private Discount discount;

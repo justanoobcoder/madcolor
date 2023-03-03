@@ -20,23 +20,22 @@ public class CustomerService {
     private final GenderService genderService;
     private final RankService rankService;
 
-    public CustomerDto createCustomer(CustomerVM customerVM) {
+    public Customer createCustomer(CustomerVM customerVM) {
         if (customerRepository.existsByTelephone(customerVM.telephone())) {
             throw new ResourceAlreadyExistsException("Customer with telephone " + customerVM.telephone() + " already existed");
         }
         Customer customer = customerMapper.toEntity(customerVM, genderService);
         customer.setRank(rankService.getRankByCustomerPoint(customer.getPoint()));
-        return customerMapper.toDto(customerRepository.save(customer));
+        return customerRepository.save(customer);
     }
 
-    public CustomerDto getCustomerByTelephone(String telephone) {
-        Customer customer = customerRepository
+    public Customer getCustomerByTelephone(String telephone) {
+         return customerRepository
                 .findByTelephone(telephone)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer with telephone " + telephone + " not found"));
-        return customerMapper.toDto(customer);
     }
 
-    public CustomerDto updateCustomer(Long id, CustomerVM customerVM) {
+    public Customer updateCustomer(Long id, CustomerVM customerVM) {
         Customer customer = customerRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Customer with id " + id + " not found"));
@@ -45,6 +44,6 @@ public class CustomerService {
             throw new ResourceAlreadyExistsException("Customer with telephone " + customerVM.telephone() + " already existed");
         }
         customerMapper.map(customerVM, customer, genderService);
-        return customerMapper.toDto(customerRepository.save(customer));
+        return customerRepository.save(customer);
     }
 }

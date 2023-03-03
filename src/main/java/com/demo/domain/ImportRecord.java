@@ -9,7 +9,6 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.time.Instant;
 
 @Getter
@@ -34,5 +33,5 @@ public class ImportRecord implements Serializable {
     @Column(nullable = false)
     private Integer quantity;
     @Column(nullable = false)
-    private BigDecimal importPrice;
+    private Double importPrice;
 }
