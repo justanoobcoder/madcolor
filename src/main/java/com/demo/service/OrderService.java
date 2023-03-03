@@ -4,15 +4,14 @@ import com.demo.domain.*;
 import com.demo.exception.ResourceNotFoundException;
 import com.demo.repository.OrderRepository;
 import com.demo.service.dto.CustomerDto;
-import com.demo.service.dto.OrderItemTempDto;
 import com.demo.service.dto.OrderTempDto;
 import com.demo.service.mapper.CustomerMapper;
 import com.demo.service.mapper.ProductMapper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -78,6 +77,7 @@ public class OrderService {
         return order;
     }
 
+    @CacheEvict(value = "orders", key = "#id")
     public PaidOrder checkoutOrder(String id, String telephone) {
         Customer customer;
         if (telephone != null) {
@@ -93,8 +93,7 @@ public class OrderService {
         order.setEmployee(employeeService.getCurrentEmployeeLogin());
         OrderTempDto orderTemp = getTempOrderById(id);
         order.setTotalPrice(0.0);
-        List<OrderItemTempDto> orderItemsTemp = orderTemp.getCart().values().stream().toList();
-        List<OrderItem> orderItems = orderItemsTemp.stream()
+        List<OrderItem> orderItems = orderTemp.getCart().values().stream()
                         .map(e -> {
                             OrderItem o = new OrderItem();
                             o.setOrder(order);
@@ -105,6 +104,7 @@ public class OrderService {
                             order.setTotalPrice(order.getTotalPrice() + o.getCost());
                             o.setProduct(p);
                             o.setQuantity(e.getQuantity());
+                            p.setQuantity(p.getQuantity() - o.getQuantity());
                             return o;
                         }).toList();
         order.setOrderItems(orderItems);

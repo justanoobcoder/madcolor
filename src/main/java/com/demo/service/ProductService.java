@@ -9,7 +9,6 @@ import com.demo.service.mapper.ProductMapper;
 import com.demo.web.vm.ProductVM;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
@@ -28,7 +27,6 @@ public class ProductService {
         return productMapper.toDto(productRepository.save(product));
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
     public Product getProductBySku(String sku) {
         return productRepository
                 .findBySku(sku)
