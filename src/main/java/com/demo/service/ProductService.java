@@ -2,6 +2,7 @@ package com.demo.service;
 
 import com.demo.domain.Product;
 import com.demo.exception.ResourceAlreadyExistsException;
+import com.demo.exception.ResourceNotFoundException;
 import com.demo.repository.ProductRepository;
 import com.demo.service.dto.ProductDto;
 import com.demo.service.mapper.ProductMapper;
@@ -24,5 +25,11 @@ public class ProductService {
         }
         Product product = productMapper.toEntity(productVM, categoryService);
         return productMapper.toDto(productRepository.save(product));
+    }
+
+    public Product getProductBySku(String sku) {
+        return productRepository
+                .findBySku(sku)
+                .orElseThrow(() -> new ResourceNotFoundException("SKU " + sku + " not found"));
     }
 }
