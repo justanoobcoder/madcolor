@@ -1,7 +1,6 @@
 package com.demo.service.dto;
 
-import com.demo.domain.Product;
-import com.demo.exception.BadRequestException;
+import com.demo.exception.ResourceBadRequestException;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,7 +20,7 @@ public class OrderTempDto implements Serializable {
             OrderItemTempDto orderItem = cart.get(product.getSku());
             int n = orderItem.getQuantity() + ((quantity == null) ? 1 : quantity);
             if (n > product.getQuantity()) {
-                throw new BadRequestException("Requested quantity is not available");
+                throw new ResourceBadRequestException("Requested quantity is not available");
             }
             orderItem.setQuantity(n);
         } else {
@@ -29,7 +28,7 @@ public class OrderTempDto implements Serializable {
             orderItem.setProduct(product);
             int n = (quantity == null) ? 1 : quantity;
             if (n > product.getQuantity()) {
-                throw new BadRequestException("Requested quantity is not available");
+                throw new ResourceBadRequestException("Requested quantity is not available");
             }
             orderItem.setQuantity(n);
             cart.put(product.getSku(), orderItem);

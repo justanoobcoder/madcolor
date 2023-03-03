@@ -58,7 +58,7 @@ public class ResourceExceptionHandler implements ProblemHandling {
     }
 
     @ExceptionHandler
-    public ResponseEntity<Problem> handleBadRequestException(BadRequestException e, NativeWebRequest request) {
+    public ResponseEntity<Problem> handleBadRequestException(ResourceBadRequestException e, NativeWebRequest request) {
         ThrowableProblem problem = Problem.builder()
                 .with("timestamp", Instant.now())
                 .with("error", Status.BAD_REQUEST.getReasonPhrase())

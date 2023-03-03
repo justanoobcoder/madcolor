@@ -1,11 +1,11 @@
 package com.demo.exception;
 
-public class BadRequestException extends RuntimeException {
-    public BadRequestException(String message) {
+public class ResourceBadRequestException extends RuntimeException {
+    public ResourceBadRequestException(String message) {
         super(message);
     }
 
-    public BadRequestException(String message, Throwable cause) {
+    public ResourceBadRequestException(String message, Throwable cause) {
         super(message, cause);
     }
 }
